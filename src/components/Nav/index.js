@@ -54,4 +54,4 @@ function Nav(props) {
   );
 }
 
-export default Nav; //test
+export default Nav;

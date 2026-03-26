@@ -1,4 +1,60 @@
-# Getting Started with Create React App
+# Photo Port
+
+![React](https://img.shields.io/badge/React-17-61DAFB?style=flat&logo=react&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=flat&logo=javascript&logoColor=black)
+![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-Deployed-222222?style=flat&logo=githubpages&logoColor=white)
+![License](https://img.shields.io/badge/License-ISC-blue?style=flat)
+
+## About
+
+A single-page photo portfolio application built with React for a photographer. Browse categorized photo galleries with a clean, responsive interface. Deployed on GitHub Pages.
+
+## Features
+
+- Browse photo galleries organized by category
+- Single-page application with no page reloads
+- Responsive image grid layout
+- Category navigation with active state
+- Contact form
+- Deployed to GitHub Pages
+- Unit tested with React Testing Library
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Frontend | React 17, Create React App 5 |
+| Testing | Jest, React Testing Library 11 |
+| Deployment | GitHub Pages, gh-pages 4 |
+
+## Getting Started
+
+```bash
+# Clone the repository
+git clone https://github.com/coleyrockin/photo-port.git
+cd photo-port
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm start
+```
+
+Open `http://localhost:3000` to view in the browser.
+
+## Project Structure
+
+```
+photo-port/
+├── public/
+├── src/
+└── package.json
+```
+
+---
+
+> Built by [coleyrockin](https://github.com/coleyrockin)# Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

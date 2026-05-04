@@ -240,6 +240,48 @@ textarea {
   height: 300px;
   margin-bottom: 50px;
   cursor: pointer;
+  display: block;
+}
+
+.img-thumbnail-button {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0 0.25rem;
+  cursor: pointer;
+}
+
+.img-thumbnail-button:focus-visible {
+  outline: 3px solid var(--secondary);
+  outline-offset: 2px;
+}
+
+.img-thumbnail-button img {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.img-thumbnail-button:hover img {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.nav-link {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.nav-link:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+}
+
+.success-text {
+  color: #2e7d32;
+  margin: 0.5rem 0;
 }
 
 .modalBackdrop {

@@ -17,33 +17,42 @@ function Nav(props) {
           <span role="img" aria-label="camera"> 📸</span> Oh Snap!
         </a>
       </h2>
-      <nav>
+      <nav aria-label="Primary">
         <ul className="flex-row">
           <li className="mx-2">
             <a data-testid="about" href="#about" onClick={() => setContactSelected(false)}>
               About me
             </a>
           </li>
-          <li className={`mx-2 ${contactSelected && 'navActive'}`}>
-            <span onClick={() => setContactSelected(true)}>Contact</span>
-          </li>
-          {categories.map((category) => (
-            <li
-              className={`mx-1 ${
-                currentCategory.name === category.name && !contactSelected && 'navActive'
-                }`}
-              key={category.name}
+          <li className={`mx-2 ${contactSelected ? 'navActive' : ''}`}>
+            <button
+              type="button"
+              className="nav-link"
+              onClick={() => setContactSelected(true)}
+              aria-pressed={contactSelected}
             >
-              <span
-                onClick={() => {
-                  setCurrentCategory(category);
-                  setContactSelected(false);
-                }}
-              >
-                {capitalizeFirstLetter(category.name)}
-              </span>
-            </li>
-          ))}
+              Contact
+            </button>
+          </li>
+          {categories.map((category) => {
+            const isActive =
+              currentCategory.name === category.name && !contactSelected;
+            return (
+              <li className={`mx-1 ${isActive ? 'navActive' : ''}`} key={category.name}>
+                <button
+                  type="button"
+                  className="nav-link"
+                  onClick={() => {
+                    setCurrentCategory(category);
+                    setContactSelected(false);
+                  }}
+                  aria-pressed={isActive}
+                >
+                  {capitalizeFirstLetter(category.name)}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </header>

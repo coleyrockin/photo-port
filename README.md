@@ -1,70 +1,126 @@
-# Getting Started with Create React App
+# Photo Port
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![React](https://img.shields.io/badge/React-17-61DAFB?style=flat&logo=react&logoColor=white)
+![Create React App](https://img.shields.io/badge/CRA-5.x-09D3AC?style=flat&logo=create-react-app&logoColor=white)
+![License](https://img.shields.io/badge/License-ISC-blue?style=flat)
 
-## Available Scripts
+A small React photography portfolio with a category-filtered gallery, a lightbox modal, and a contact form. The data is local — no backend — so it deploys cleanly to GitHub Pages.
 
-In the project directory, you can run:
+## Live demo
 
-### `npm start`
+[coleyrockin.github.io/photo-port](http://coleyrockin.github.io/photo-port)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Category-filtered gallery** — switch between Commercial, Portraits, Food, and Landscape from the nav
+- **Lightbox modal** — click a photo for the full-size image; close with the close button, the backdrop, or `Esc`
+- **Lazy-loaded thumbnails** — `loading="lazy"` so off-screen images don't block first paint
+- **Accessible nav** — real `<button>` elements with `aria-pressed`, focus-visible outlines, and a labeled landmark
+- **Contact form** — controlled inputs, live validation, and a `mailto:` fallback (swap for Formspree / Netlify Forms when deployed)
+- **Tests** — `@testing-library/react` smoke tests for each component
 
-### `npm test`
+## Tech stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Layer | Tech |
+|---|---|
+| Framework | React 17 |
+| Build | Create React App (react-scripts 5) |
+| Tests | Jest, @testing-library/react |
+| Deploy | GitHub Pages via `gh-pages` |
+| Tooling | Prettier 3 |
 
-### `npm run build`
+## Getting started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js 20+
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Install
 
-### `npm run eject`
+```bash
+git clone https://github.com/coleyrockin/photo-port.git
+cd photo-port
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Run locally
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+The app runs at `http://localhost:3000`.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Run tests
 
-## Learn More
+```bash
+npm test
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Build for production
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm run build
+```
 
-### Code Splitting
+### Deploy to GitHub Pages
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npm run deploy
+```
 
-### Analyzing the Bundle Size
+This builds the app and pushes the `build/` folder to the `gh-pages` branch on origin. The `homepage` field in `package.json` controls the deployed URL.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Project structure
 
-### Making a Progressive Web App
+```
+photo-port/
+├── public/
+├── src/
+│   ├── assets/                # cover, large, small (thumbnail) images per category
+│   ├── components/
+│   │   ├── About/
+│   │   ├── Contact/
+│   │   ├── Gallery/
+│   │   ├── Modal/
+│   │   ├── Nav/
+│   │   └── PhotoList/
+│   ├── utils/
+│   │   └── helpers.js          # capitalizeFirstLetter, validateEmail
+│   ├── App.js
+│   ├── index.js
+│   └── index.css
+└── package.json
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## What I learned
 
-### Advanced Configuration
+- Lifting category state into `App` so the gallery, nav, and contact view stay in sync without a router
+- Building a focus-trapped, escape-listenable modal from scratch (no library)
+- Why `defaultValue` + `onBlur` on a controlled form is a trap (state lags) — switched to `value` + `onChange`
+- How GitHub Pages + a CRA `homepage` field combine to ship a static portfolio with a single command
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Known limitations
 
-### Deployment
+- The contact form opens the user's mail client via `mailto:` instead of POSTing to a backend. Wire to Formspree / Netlify Forms / a small API for production.
+- 27 transitive npm advisories ride along with `react-scripts` (CRA). They are dev-only. A migration to Vite would clear most of them.
+- React 17 is older than current; an upgrade to React 18 + `createRoot` is on the roadmap.
+- Photo data is hand-coded in `src/components/PhotoList/index.js`; a real version would source from a CMS or local manifest.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Roadmap
 
-### `npm run build` fails to minify
+1. Add screenshots / a 30-second demo GIF to this README
+2. Move photos array to `src/data/photos.js` and import per category
+3. Wire the contact form to Formspree (or similar) so submissions actually deliver
+4. Migrate from CRA to Vite (clears most dev-dep advisories, faster HMR)
+5. React 18 + `createRoot`
+6. Add a GitHub Actions CI workflow (build + test on PRs)
+7. Add prev/next navigation inside the modal
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## License
+
+ISC — see [`LICENSE`](./LICENSE).
+
+## Author
+
+Built by [Boyd Roberts](https://github.com/coleyrockin).

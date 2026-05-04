@@ -1,10 +1,12 @@
 # Photo Port
 
-![React](https://img.shields.io/badge/React-17-61DAFB?style=flat&logo=react&logoColor=white)
-![Create React App](https://img.shields.io/badge/CRA-5.x-09D3AC?style=flat&logo=create-react-app&logoColor=white)
+![React](https://img.shields.io/badge/React-18-61DAFB?style=flat&logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat&logo=vite&logoColor=white)
+![React Router](https://img.shields.io/badge/React_Router-6-CA4245?style=flat&logo=react-router&logoColor=white)
 ![License](https://img.shields.io/badge/License-ISC-blue?style=flat)
+![CI](https://github.com/coleyrockin/photo-port/actions/workflows/ci.yml/badge.svg)
 
-A small React photography portfolio with a category-filtered gallery, a lightbox modal, and a contact form. The data is local — no backend — so it deploys cleanly to GitHub Pages.
+A React 18 photography portfolio with URL-based category routing, a full-screen lightbox with prev/next navigation, and a dark editorial design.
 
 ## Live demo
 
@@ -12,20 +14,22 @@ A small React photography portfolio with a category-filtered gallery, a lightbox
 
 ## Features
 
-- **Category-filtered gallery** — switch between Commercial, Portraits, Food, and Landscape from the nav
-- **Lightbox modal** — click a photo for the full-size image; close with the close button, the backdrop, or `Esc`
+- **React Router v6** — each category gets a real URL (`/#/commercial`, `/#/portraits`, etc.)
+- **Lightbox modal** — full-size image with prev/next navigation; close with `✕`, backdrop click, `Esc`, or arrow keys
 - **Lazy-loaded thumbnails** — `loading="lazy"` so off-screen images don't block first paint
-- **Accessible nav** — real `<button>` elements with `aria-pressed`, focus-visible outlines, and a labeled landmark
-- **Contact form** — controlled inputs, live validation, and a `mailto:` fallback (swap for Formspree / Netlify Forms when deployed)
-- **Tests** — `@testing-library/react` smoke tests for each component
+- **Dark editorial design** — Cormorant Garamond headings, Inter body, warm gold accent, responsive grid
+- **Contact form** — controlled inputs, live email validation, `mailto:` submission
+- **Tests** — Vitest + @testing-library/react, 11 tests across all components
+- **CI** — GitHub Actions builds and tests on every push to main
 
 ## Tech stack
 
 | Layer | Tech |
 |---|---|
-| Framework | React 17 |
-| Build | Create React App (react-scripts 5) |
-| Tests | Jest, @testing-library/react |
+| Framework | React 18 + `createRoot` |
+| Build | Vite 5 |
+| Routing | React Router v6 (HashRouter for GH Pages) |
+| Tests | Vitest, @testing-library/react |
 | Deploy | GitHub Pages via `gh-pages` |
 | Tooling | Prettier 3 |
 
@@ -49,7 +53,7 @@ npm install
 npm start
 ```
 
-The app runs at `http://localhost:3000`.
+Opens at `http://localhost:5173`.
 
 ### Run tests
 
@@ -63,59 +67,55 @@ npm test
 npm run build
 ```
 
+Output goes to `dist/`.
+
 ### Deploy to GitHub Pages
 
 ```bash
 npm run deploy
 ```
 
-This builds the app and pushes the `build/` folder to the `gh-pages` branch on origin. The `homepage` field in `package.json` controls the deployed URL.
+Builds to `dist/` and pushes to the `gh-pages` branch.
 
 ## Project structure
 
 ```
 photo-port/
+├── index.html                  # Vite entry point (root)
+├── vite.config.js
 ├── public/
+│   └── assets/                 # Static images (small, large, cover)
 ├── src/
-│   ├── assets/                # cover, large, small (thumbnail) images per category
+│   ├── data/
+│   │   └── photos.js           # CATEGORIES and PHOTOS arrays
 │   ├── components/
 │   │   ├── About/
 │   │   ├── Contact/
-│   │   ├── Gallery/
-│   │   ├── Modal/
-│   │   ├── Nav/
+│   │   ├── Gallery/            # reads :category param from URL
+│   │   ├── Modal/              # prev/next + keyboard nav
+│   │   ├── Nav/                # NavLink-based, no prop drilling
 │   │   └── PhotoList/
 │   ├── utils/
-│   │   └── helpers.js          # capitalizeFirstLetter, validateEmail
-│   ├── App.js
-│   ├── index.js
+│   │   └── helpers.js
+│   ├── App.jsx
+│   ├── main.jsx
 │   └── index.css
-└── package.json
+└── .github/workflows/ci.yml
 ```
 
-## What I learned
+## What I learned / practiced
 
-- Lifting category state into `App` so the gallery, nav, and contact view stay in sync without a router
-- Building a focus-trapped, escape-listenable modal from scratch (no library)
-- Why `defaultValue` + `onBlur` on a controlled form is a trap (state lags) — switched to `value` + `onChange`
-- How GitHub Pages + a CRA `homepage` field combine to ship a static portfolio with a single command
+- Migrating a CRA project to Vite (dropped from 1248 → 236 packages, 69 → 5 vulnerabilities)
+- React 18 `createRoot` and concurrent rendering
+- React Router v6 — `useParams`, `NavLink`, `Navigate`, nested routes
+- HashRouter as the pragmatic choice for GitHub Pages SPA deployment
+- Prev/next modal state with index cycling, keyboard arrow key navigation
+- CSS custom properties for a coherent design system without a framework
 
 ## Known limitations
 
-- The contact form opens the user's mail client via `mailto:` instead of POSTing to a backend. Wire to Formspree / Netlify Forms / a small API for production.
-- 27 transitive npm advisories ride along with `react-scripts` (CRA). They are dev-only. A migration to Vite would clear most of them.
-- React 17 is older than current; an upgrade to React 18 + `createRoot` is on the roadmap.
-- Photo data is hand-coded in `src/components/PhotoList/index.js`; a real version would source from a CMS or local manifest.
-
-## Roadmap
-
-1. Add screenshots / a 30-second demo GIF to this README
-2. Move photos array to `src/data/photos.js` and import per category
-3. Wire the contact form to Formspree (or similar) so submissions actually deliver
-4. Migrate from CRA to Vite (clears most dev-dep advisories, faster HMR)
-5. React 18 + `createRoot`
-6. Add a GitHub Actions CI workflow (build + test on PRs)
-7. Add prev/next navigation inside the modal
+- Contact form opens `mailto:` instead of POSTing. Wire to Formspree / Netlify Forms for real delivery.
+- Photo data is hand-coded in `src/data/photos.js`; a real version would source from a CMS.
 
 ## License
 

@@ -1,29 +1,13 @@
-// __tests__/Contact.test.js
-import React from 'react'
-import { render, cleanup } from '@testing-library/react'
-import '@testing-library/jest-dom/extend-expect'
-import Contact from './Contact'
+import React from 'react';
+import { render } from '@testing-library/react';
+import Contact from '..';
 
-afterEach(cleanup)
-
-describe('Contact component renders', () => {
-  it('renders', () => {
-  render(<Contact />);
+it('renders the heading', () => {
+  const { getByTestId } = render(<Contact />);
+  expect(getByTestId('h1tag')).toHaveTextContent('Get in touch');
 });
 
-  it('renders', () => {
-    const { asFragment } = render(<Contact />)
-    expect(asFragment()).toMatchSnapshot()
-  })
-})
-
-
-it('renders', () => {
-  const { getByTestId } = render(<Contact />)
-  expect(getByTestId('h1tag')).toHaveTextContent('Contact me')
-})
- 
-it('renders', () => {
-  const { getByTestId } = render(<Contact />)
-  expect(getByTestId('button')).toHaveTextContent('Submit')
-})
+it('renders the submit button', () => {
+  const { getByTestId } = render(<Contact />);
+  expect(getByTestId('button')).toHaveTextContent('Send message');
+});

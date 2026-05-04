@@ -1,18 +1,15 @@
-// __tests__/PhotoList.test.js
-import React from 'react'
-import { render, cleanup } from '@testing-library/react'
-import '@testing-library/jest-dom/extend-expect'
-import PhotoList from '../'
+import React from 'react';
+import { render } from '@testing-library/react';
+import PhotoList from '..';
 
-afterEach(cleanup)
+it('renders commercial photos', () => {
+  const { getAllByRole } = render(<PhotoList category="commercial" />);
+  const buttons = getAllByRole('button');
+  expect(buttons.length).toBe(5);
+});
 
-describe('PhotoList is rendering', () => {
-  it('renders', () => {
-    render(<PhotoList />);
-  });
-
-  it('renders', () => {
-    const { asFragment } = render(<PhotoList />)
-    expect(asFragment()).toMatchSnapshot()
-  });
+it('renders portrait photos', () => {
+  const { getAllByRole } = render(<PhotoList category="portraits" />);
+  const buttons = getAllByRole('button');
+  expect(buttons.length).toBe(4);
 });

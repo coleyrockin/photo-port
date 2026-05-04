@@ -1,60 +1,40 @@
 import React from 'react';
-import { capitalizeFirstLetter } from '../../utils/helpers';
+import { NavLink } from 'react-router-dom';
+import { CATEGORIES } from '../../data/photos';
 
-function Nav(props) {
-  const {
-    categories = [],
-    setCurrentCategory,
-    contactSelected,
-    currentCategory,
-    setContactSelected,
-  } = props;
-
+function Nav() {
   return (
-    <header className="flex-row px-1">
-      <h2>
-        <a data-testid="link" href="/">
-          <span role="img" aria-label="camera"> 📸</span> Oh Snap!
+    <header className="site-header">
+      <div className="header-inner">
+        <a href="#/" className="site-logo">
+          <span className="logo-icon" role="img" aria-label="camera">
+            📸
+          </span>
+          <span className="logo-text">Photo Port</span>
         </a>
-      </h2>
-      <nav aria-label="Primary">
-        <ul className="flex-row">
-          <li className="mx-2">
-            <a data-testid="about" href="#about" onClick={() => setContactSelected(false)}>
-              About me
-            </a>
-          </li>
-          <li className={`mx-2 ${contactSelected ? 'navActive' : ''}`}>
-            <button
-              type="button"
-              className="nav-link"
-              onClick={() => setContactSelected(true)}
-              aria-pressed={contactSelected}
-            >
-              Contact
-            </button>
-          </li>
-          {categories.map((category) => {
-            const isActive =
-              currentCategory.name === category.name && !contactSelected;
-            return (
-              <li className={`mx-1 ${isActive ? 'navActive' : ''}`} key={category.name}>
-                <button
-                  type="button"
-                  className="nav-link"
-                  onClick={() => {
-                    setCurrentCategory(category);
-                    setContactSelected(false);
-                  }}
-                  aria-pressed={isActive}
+        <nav aria-label="Primary">
+          <ul className="nav-list">
+            {CATEGORIES.map((cat) => (
+              <li key={cat.name}>
+                <NavLink
+                  to={`/${cat.name}`}
+                  className={({ isActive }) => (isActive ? 'nav-link nav-link--active' : 'nav-link')}
                 >
-                  {capitalizeFirstLetter(category.name)}
-                </button>
+                  {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
+                </NavLink>
               </li>
-            );
-          })}
-        </ul>
-      </nav>
+            ))}
+            <li>
+              <NavLink
+                to="/contact"
+                className={({ isActive }) => (isActive ? 'nav-link nav-link--active' : 'nav-link')}
+              >
+                Contact
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </header>
   );
 }

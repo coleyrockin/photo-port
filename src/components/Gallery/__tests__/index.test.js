@@ -1,25 +1,24 @@
-// __tests__/Gallery.test.js
-import React from 'react'
-import { render, cleanup } from '@testing-library/react'
-import '@testing-library/jest-dom/extend-expect'
-import Gallery from '..'
-const portrait = { name: "portraits", description: "Portraits of people in my life" };
+import React from 'react';
+import { render } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import Gallery from '..';
 
-afterEach(cleanup)
+function renderGallery(category = 'commercial') {
+  return render(
+    <MemoryRouter initialEntries={[`/${category}`]}>
+      <Routes>
+        <Route path="/:category" element={<Gallery />} />
+      </Routes>
+    </MemoryRouter>,
+  );
+}
 
-describe('Gallery component', () => {
-
-  it('renders', () => {
-    render(<Gallery currentCategory={portrait} />);
-  });
-
-  it('matches snapshot', () => {
-    const { asFragment } = render(<Gallery currentCategory={portrait} />)
-    expect(asFragment()).toMatchSnapshot()
-  })
+it('renders the gallery heading', () => {
+  const { getByText } = renderGallery('commercial');
+  expect(getByText('Commercial')).toBeTruthy();
 });
 
-it('renders', () => {
-  const { getByTestId } = render(<Gallery currentCategory={portrait} />)
-  expect(getByTestId('h1tag')).toHaveTextContent('Portraits')
-})
+it('redirects unknown category to commercial', () => {
+  const { getByText } = renderGallery('unknown');
+  expect(getByText('Commercial')).toBeTruthy();
+});

@@ -1,44 +1,57 @@
 import React, { useEffect, useRef } from 'react';
 
-const Modal = ({ onClose, currentPhoto }) => {
+const Modal = ({ photo, onClose, onNext, onPrev, hasMultiple }) => {
   const closeButtonRef = useRef(null);
-  const { name, description, category, index } = currentPhoto;
+  const { name, description, category, index } = photo;
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-    document.addEventListener('keydown', handleKeyDown);
     closeButtonRef.current?.focus();
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
 
-  const handleBackdropClick = (event) => {
-    if (event.target === event.currentTarget) {
-      onClose();
-    }
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight' && hasMultiple) onNext();
+      if (e.key === 'ArrowLeft' && hasMultiple) onPrev();
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose, onNext, onPrev, hasMultiple]);
+
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) onClose();
   };
 
   return (
     <div
-      className="modalBackdrop"
+      className="modal-backdrop"
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"
       aria-label={name}
     >
-      <div className="modalContainer">
-        <h3 className="modalTitle">{name}</h3>
-        <img
-          src={require(`../../assets/large/${category}/${index}.jpg`)}
-          alt={name}
-        />
-        <p>{description}</p>
-        <button ref={closeButtonRef} type="button" onClick={onClose}>
-          Close
+      <div className="modal-container">
+        <button ref={closeButtonRef} type="button" className="modal-close" onClick={onClose} aria-label="Close">
+          ✕
         </button>
+        <img
+          src={`/photo-port/assets/large/${category}/${index}.jpg`}
+          alt={name}
+          className="modal-image"
+        />
+        <div className="modal-info">
+          <h3 className="modal-title">{name}</h3>
+          <p className="modal-desc">{description}</p>
+        </div>
+        {hasMultiple && (
+          <div className="modal-nav">
+            <button type="button" className="modal-nav-btn" onClick={onPrev} aria-label="Previous photo">
+              ‹
+            </button>
+            <button type="button" className="modal-nav-btn" onClick={onNext} aria-label="Next photo">
+              ›
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
